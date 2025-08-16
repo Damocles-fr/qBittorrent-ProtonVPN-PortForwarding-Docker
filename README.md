@@ -1,9 +1,9 @@
 # qBittorrent ProtonVPN PortForwarding Docker
 
-** - docker-compose works on my QNAP HS-264 NAS, installation : /share/CACHEDEV3_DATA/SSD2TB/
-** - Downloads and torrents folder : /share/CACHEDEV3_DATA/SSD2TB/Downloads
+- **docker-compose works on my QNAP HS-264 NAS, installation : /share/CACHEDEV3_DATA/SSD2TB/
+- **Downloads and torrents folder : /share/CACHEDEV3_DATA/SSD2TB/Downloads
 
-### What this project does 
+## What this project does 
 Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a QNAP NAS — ensuring full VPN routing **and automatic port forwarding** for improved torrenting performance. The Web UI is published on your LAN while all BitTorrent traffic goes through Proton's WireGuard tunnel.
 
 > Based on the excellent work by **torrentsec**: https://github.com/torrentsec/qbittorrent-protonvpn-docker — thank you, torrentsec ❤️
