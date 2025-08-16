@@ -65,9 +65,8 @@ docker logs qbittorrent 2>&1 \
   | awk '{print $NF}'
 ~~~
 
-6. **Immediately change the admin password** in WebUI.
-7. Harden the WebUI and finalize fixes:
-8. Harden the WebUI and finalize fixes:
+5. **Immediately change the admin password** in WebUI.
+6. Harden the WebUI and finalize fixes:
    ```sh
    sh ./scripts/fix_after_login.sh --harden
    ```
