@@ -55,4 +55,10 @@
     echo "[OK] Stack is up."
     echo "Open qBittorrent WebUI: http://<NAS_IP>:${WEBUI_PORT}"
     echo "Default credentials (Linuxserver.io image): admin / adminadmin"
+    echo "[i] If qBittorrent created a temporary WebUI password, here it is:"
+docker logs qbittorrent 2>&1 \
+| awk '/WebUI administrator password is/{print $NF}' \
+| tail -n1 || true
+echo "[i] Open the WebUI, log in, and change the admin password before hardening."
     echo "IMPORTANT: Change the admin password first, then run:  sh ./scripts/fix_after_login.sh --harden"
+    echo --harden adds WebUI security, turns on CSRF/Clickjacking/Host header
