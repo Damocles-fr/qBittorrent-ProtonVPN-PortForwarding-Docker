@@ -61,7 +61,7 @@ Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a QNAP NAS — ens
   | tail -n 1 \
   | awk '{print $NF}'
    ```
-
+```
 6. **Immediately change the admin password** in WebUI.
 7. Harden the WebUI and finalize fixes:
    ```sh
