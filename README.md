@@ -73,6 +73,7 @@ docker logs qbittorrent 2>&1 \
    ```sh
    sh ./scripts/fix_after_login.sh --harden
    ```
+   '--harden' adds WebUI security, turns on CSRF/Clickjacking/Host header
    If some torrents show *Missing files* or *Stalled*, select them and **Force recheck** in the WebUI.
 
 ---
