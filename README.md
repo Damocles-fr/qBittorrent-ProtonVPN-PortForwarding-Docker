@@ -1,4 +1,4 @@
-# qbt-proton-qnap (QNAP + qBittorrent + ProtonVPN via Gluetun)
+# qBittorrent ProtonVPN PortForwarding Docker
 
 WIP, works on my QNAP HS-264 NAS, installation in /share/CACHEDEV3_DATA/SSD2TB/
 
