@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "path": "/Downloads/Torrents",
+      "enabled": true,
+      "download_path": "",
+      "category": "",
+      "recursive": true,
+      "download_in_watch_folder": false
+    }
+  ]
+}
