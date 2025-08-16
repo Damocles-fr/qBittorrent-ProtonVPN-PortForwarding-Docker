@@ -1,6 +1,6 @@
 # qBittorrent ProtonVPN PortForwarding Docker
 
-## WIP, works on my QNAP HS-264 NAS, installation in /share/CACHEDEV3_DATA/SSD2TB/
+## Works on my QNAP HS-264 NAS, installation in /share/CACHEDEV3_DATA/SSD2TB/
 
 **What this project does**  
 Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a QNAP NAS — ensuring full VPN routing **and automatic port forwarding** for improved torrenting performance. The Web UI is published on your LAN while all BitTorrent traffic goes through Proton's WireGuard tunnel.
