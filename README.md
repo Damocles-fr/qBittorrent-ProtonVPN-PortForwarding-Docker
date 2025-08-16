@@ -142,3 +142,8 @@ Optional filters you can set in `.env` if you want to pin regions:
 
 ## License
 This project is licensed under the MIT License – see the LICENSE file for details.
+
+---
+
+## Github
+[Damocles-fr](https://github.com/Damocles-fr)
