@@ -55,7 +55,7 @@ Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a QNAP NAS — ens
    ```
 4. Open qBittorrent WebUI: `http://<NAS_IP>:8080`  
    Default LinuxServer credentials: **admin / adminadmin**
-Or
+**Or**
    Password may have automatically changed to a temporary one.  
 To see it, run:
 ~~~sh
