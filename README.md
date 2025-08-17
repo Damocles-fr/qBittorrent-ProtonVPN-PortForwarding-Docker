@@ -1,4 +1,4 @@
-# qBittorrent ProtonVPN Port Forwarding Docker
+# qBittorrent & ProtonVPN Port Forwarding Docker
 
 - docker-compose works on my QNAP HS-264 NAS, installation : /share/CACHEDEV3_DATA/SSD2TB/
 - Downloads and torrents folder : /share/CACHEDEV3_DATA/SSD2TB/Downloads
