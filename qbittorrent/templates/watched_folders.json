@@ -1,0 +1,10 @@
+[
+  {
+    "path": "/Downloads/Torrents",
+    "enabled": true,
+    "recursive": false,
+    "download_in_subfolder": false,
+    "category": "",
+    "save_path": ""
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "Movies": {
+    "save_path": "/Downloads/Movies/"
+  },
+  "TV": {
+    "save_path": "/Downloads/TV/"
+  },
+  "Anime": {
+    "save_path": "/Downloads/Anime/"
+  },
+  "Music": {
+    "save_path": "/Downloads/Music/"
+  },
+  "Books": {
+    "save_path": "/Downloads/Books/"
+  },
+  "Software": {
+    "save_path": "/Downloads/Software/"
+  },
+  "Games": {
+    "save_path": "/Downloads/Games/"
+  },
+  "Misc": {
+    "save_path": "/Downloads/Misc/"
+  }
+}
