@@ -150,7 +150,7 @@ Optional filters you can set in `.env` if you want to pin regions:
 ---
 
 ## Credits
-- Massive thanks to **torrentsec** for their original project and guidance:
+- Massive thanks to **torrentsec** for his original project and guidance:
   - Repo: https://github.com/torrentsec/qbittorrent-protonvpn-docker
   - Profile: https://github.com/torrentsec
 
