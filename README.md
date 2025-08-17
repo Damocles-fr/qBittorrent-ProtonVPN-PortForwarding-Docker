@@ -161,4 +161,4 @@ This project is licensed under the MIT License – see the LICENSE file for deta
 ---
 
 ## Github
-[Damocles-fr](https://github.com/Damocles-fr)
+[https://github.com/Damocles-fr/](https://github.com/Damocles-fr)
