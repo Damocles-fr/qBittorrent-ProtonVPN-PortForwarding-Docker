@@ -37,6 +37,7 @@ Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a QNAP NAS — ens
 ---
 
 ## Quick start
+0. Download : https://github.com/Damocles-fr/qBittorrent-ProtonVPN-PortForwarding-Docker/releases/tag/v0.3
 1. Copy this folder to your QNAP, e.g.:  
    `/share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap`
 2. Create your env file:
