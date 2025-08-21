@@ -146,6 +146,7 @@ Optional filters you can set in `.env` if you want to pin regions:
   - See `docker logs gluetun` for the forwarded port status.
 - **Bind to VPN**:
   - We set `Connection\Interface=tun0` in `qBittorrent.conf`. Traffic stays inside the tunnel.
+  - Even without `Connection\Interface=tun0` , Qbittorrent shouldn't be able to connect anything outside of the tunnel.
 
 ---
 
