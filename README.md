@@ -147,6 +147,8 @@ DNS_ADDRESS=<dns address from wireguard config>
 
 This will prevent gluetun from routing dns with it's own unbound implementation, and pass them to proton instead.
 
+---
+
 ### Troubleshooting
 - **Stalled / missing files** after migration from `/downloads` (lowercase):  
   Run `sh ./scripts/fix_after_login.sh --rehash-only` then in WebUI **Force recheck**.
