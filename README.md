@@ -118,7 +118,7 @@ Optional filters you can set in `.env` if you want to pin regions:
 
 ---
 
-## Security model (avoid “unauthorized” lockouts)
+### Security model (avoid “unauthorized” lockouts)
 - On first boot, WebUI is **permissive** (`Address=*`, `Port=8080`) so you can reach it and change the password.
 - After you change the password, run:
   ```sh
@@ -133,7 +133,21 @@ Optional filters you can set in `.env` if you want to pin regions:
 
 ---
 
-## Troubleshooting
+### Thanks to Seraph_TC on reddit :
+
+By default, gluetun adds 1.1.1.1 to the list of dns servers it uses - you can verify this by connecting through the gluetun tunel with docker and running a dns leak test:
+
+docker run --rm --network=container:gluetun alpine:3.20 sh -c "apk add wget && apk add curl && apk add bash && curl https://raw.githubusercontent.com/macvk/dnsleaktest/master/dnsleaktest.sh -o dnsleaktest.sh && chmod +x dnsleaktest.sh && wget -qO- https://ipinfo.io && ./dnsleaktest.sh"
+
+In the env settings for gluetun, set the following:
+
+DOT=off
+
+DNS_ADDRESS=<dns address from wireguard config>
+
+This will prevent gluetun from routing dns with it's own unbound implementation, and pass them to proton instead.
+
+### Troubleshooting
 - **Stalled / missing files** after migration from `/downloads` (lowercase):  
   Run `sh ./scripts/fix_after_login.sh --rehash-only` then in WebUI **Force recheck**.
 - **Permissions** on QNAP: scripts always `chown -R PUID:PGID` and grant group write on all `/Downloads` and config paths.
