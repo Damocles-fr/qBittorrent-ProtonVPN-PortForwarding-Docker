@@ -135,7 +135,7 @@ Optional filters you can set in `.env` if you want to pin regions:
 
 ### Thanks to Seraph_TC on reddit :
 
-By default, gluetun adds 1.1.1.1 to the list of dns servers it uses - you can verify this by connecting through the gluetun tunel with docker and running a dns leak test:
+By default, gluetun adds 1.1.1.1 (Cloudfare DNS) to the list of dns servers it uses - you can verify this by connecting through the gluetun tunel with docker and running a dns leak test:
 
 docker run --rm --network=container:gluetun alpine:3.20 sh -c "apk add wget && apk add curl && apk add bash && curl https://raw.githubusercontent.com/macvk/dnsleaktest/master/dnsleaktest.sh -o dnsleaktest.sh && chmod +x dnsleaktest.sh && wget -qO- https://ipinfo.io && ./dnsleaktest.sh"
 
