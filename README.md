@@ -45,7 +45,7 @@ sh scripts/install.sh
   docker logs qbittorrent 2>&1     | grep -A1 "WebUI administrator username is"     | tail -n 1     | awk '{print $NF}'
   ```
 
-- Login
+- Log in
 - (Optional) Move your own **torrents** into `/Downloads/...` and your **BT_backup** into into `AppData/qbt-proton/qBittorrent` 
 
 ## 3) After login — run the fix
