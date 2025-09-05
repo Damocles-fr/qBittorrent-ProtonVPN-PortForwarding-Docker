@@ -1,175 +1,173 @@
-# qBittorrent & ProtonVPN Port Forwarding Docker
+# qbt-proton-qnap
 
-- docker-compose works on my QNAP HS-264 NAS, installation : /share/CACHEDEV3_DATA/SSD2TB/
-- Downloads and torrents folder : /share/CACHEDEV3_DATA/SSD2TB/Downloads
+**qBittorrent + ProtonVPN (WireGuard) on QNAP**, fully routed through VPN with **automatic port forwarding Mod**, DNS set to **Proton (10.2.0.1)**, and a startup that avoids the classic qB WebUI *Unauthorized* issue on QNAP Container Station.
 
-## What this project does 
-Runs qBittorrent *entirely inside* ProtonVPN using Gluetun on a NAS — ensuring full VPN routing **and automatic port forwarding** for improved torrenting performance. The Web UI is published on your LAN while all BitTorrent traffic goes through Proton's WireGuard tunnel.
+## UPDATE v09.2025 : Should works with lastest Gluetun, mod, and Qbittorrent
 
-> Based on the excellent work by **torrentsec**: https://github.com/torrentsec/qbittorrent-protonvpn-docker — thank you, torrentsec ❤️
+## What you get
 
----
+- qBittorrent behind **Gluetun (ProtonVPN WireGuard)**  
+- **Automatic port forwarding Mod** (keeps qB's listen port synced with Gluetun)
+- WebUI exposed on **host `:8081`** (QNAP already uses `:8080`)
+- Proton **DNS 10.2.0.1** and WG address **10.2.0.2/32** (no Cloudflare)
+- Safe first-boot WebUI options to avoid *Unauthorized*
+- Clean structure, consistent paths:
+  - Config: `${CONFIG_ROOT}/qBittorrent/`
+  - Downloads: `/Downloads` (host `${DOWNLOADS_ROOT}`)
+  - Categories & watched folders for new .torrent
 
-## Features
-- ProtonVPN (**WireGuard**) via Gluetun
-- Automatic **port forwarding** (Proton P2P servers)
-- qBittorrent v5 (LinuxServer.io) running inside the VPN network namespace
-- WebUI reachable on your LAN (port-mapped through Gluetun)
-- QNAP/BusyBox–safe scripts
-- Opinionated defaults:
-  - Bind to `tun0`
-  - DHT/PeX/LSD **ON**
-  - Encryption **Allow** (`0`)
-  - Queueing **OFF**
-  - English folder layout under `/Downloads` (`Movies`, `TV`, …)
-  - Watched folder at `/Downloads/Torrents`
-  - Incomplete at `/Downloads/Incomplete`
-- **Two-stage WebUI security**: permissive until you log in and change the admin password, then `--harden` switches on protections (CSRF, Clickjacking, host header validation).
+Tested on **QNAP HS-264 + 2.5" SSD**
 
 ---
 
-## Prerequisites (QNAP)
-- Container Station with Docker/Compose
-- A ProtonVPN **WireGuard** config (P2P/port-forwarding capable server)
-  - You need the **PrivateKey** and **Address** from your Proton WG profile.
-- Choose absolute host paths (examples below assume `CACHEDEV3_DATA/SSD2TB`).
+## 1) Prepare
 
----
+1. **Upload this repo** to your NAS, e.g. `/share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap`
+2. Copy `envExample` to `.env` and **edit it**:
+   - `WIREGUARD_PRIVATE_KEY` → get it from **https://account.protonvpn.com/**
+   - `GLUETUN_API_KEY` → generate with `docker run --rm qmcgaw/gluetun genkey` and copy the output, Or write any **long random string**
+   - Adjust `CONFIG_ROOT` and `DOWNLOADS_ROOT` if your pool is not `CACHEDEV3_DATA` or not `SSD2TB`
+   - Adjust `SERVER_COUNTRIES` / `SERVER_CITIES` to any ProtonVPN server location (with P2P/port‑forwarding).
 
-## Quick start
-0. Download : https://github.com/Damocles-fr/qBittorrent-ProtonVPN-PortForwarding-Docker/releases/tag/v0.3
-1. Copy this folder to your QNAP, e.g.:  
-   `/share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap`
-2. Create your env file:
-   ```sh
-   cd /share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap
-   cp .env.example .env
-   vi .env   # fill in Proton WG keys, paths, PUID/PGID…
-   ```
-   - `WG_PRIVATE_KEY` — from your Proton WireGuard config (`PrivateKey=`).
-   - `WG_ADDRESSES` — from your Proton WireGuard config (`Address=`), e.g. `10.2.0.2/32`.
-   - `HOST_CONFIG`, `HOST_DOWNLOADS`, `HOST_GLUE` — QNAP absolute paths.
-   - `PUID` / `PGID` — your Container Station user/group IDs.
-   - `LAN_SUBNETS` — your LAN (e.g. `192.168.1.0/24`).
-3. Install & start:
-   ```sh
-   sh ./scripts/install.sh
-   ```
-4. Open qBittorrent WebUI: `http://<NAS_IP>:8080`  
-   Default LinuxServer credentials: **admin / adminadmin**
-   
-**Or**
+> **Important:** The `/Downloads` folder **must be empty or non‑existent** for the first start. Move your **files** after the stack is up, then *Force recheck* in qBittorrent.
 
-   Password may have automatically changed to a temporary one.  
-To see it, run:
-~~~sh
-docker logs qbittorrent 2>&1 \
-  | grep -A1 "WebUI administrator username is" \
-  | tail -n 1 \
-  | awk '{print $NF}'
-~~~
+## 2) Install
 
-5. **Immediately change the admin password** in WebUI.
-6. Finalize fixes and Harden the WebUI :
-   ```sh
-   sh ./scripts/fix_after_login.sh --harden
-   ```
-   '--harden' adds WebUI security, turns on CSRF/Clickjacking/Host header
-
-If some torrents show *Missing files* or *Stalled*, select them and **Force recheck** in the WebUI.
-
----
-
-## Files & layout
-```
-qbt-proton-qnap-en/
-├─ docker-compose.yml
-├─ .env.example
-├─ templates/
-│  ├─ qBittorrent.conf             # minimal, only used if missing
-│  ├─ categories.json              # English categories under /Downloads
-│  └─ watched_folders.json         # watches /Downloads/Torrents
-└─ scripts/
-   ├─ install.sh                   # create folders, rights, bring up stack
-   └─ fix_after_login.sh           # patch paths/permissions/resume; --harden
+- Allow SSH in QNAP Control Panel, the script works fine with PuTTY
+```sh
+cd /share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap
+sh scripts/install.sh
 ```
 
-qBittorrent data/config is stored on the host at:  
-`${HOST_CONFIG}/qBittorrent` (includes `qBittorrent.conf`, `BT_backup`, `categories.json`, `watched_folders.json`).
-
----
-
-## Proton WireGuard: where keys go
-From your Proton `.conf`:
-```ini
-[Interface]
-PrivateKey = <copy this to WG_PRIVATE_KEY>
-Address    = <copy this to WG_ADDRESSES, e.g. 10.2.0.2/32>
-```
-You **do not** need to paste DNS or peer info — Gluetun handles servers/peers.
-
-Optional filters you can set in `.env` if you want to pin regions:
-- `SERVER_COUNTRIES=` (e.g. `Netherlands,Switzerland`)
-- `SERVER_CITIES=`
-- `SERVER_HOSTNAMES=`
-
-### Port forwarding
-`PORT_FORWARDING=on` is enabled in Gluetun. Use Proton **P2P** servers that support port forwarding. Gluetun opens the port and keeps firewall rules updated. Your qBittorrent listens on its usual port inside the VPN; the forwarded port is handled by Gluetun’s firewall/NAT layer.
-
----
-
-### Security model (avoid “unauthorized” lockouts)
-- On first boot, WebUI is **permissive** (`Address=*`, `Port=8080`) so you can reach it and change the password.
-- After you change the password, run:
+- WebUI is at: `http://<your-nas-ip>:8081` (user `admin`)
+- If qBittorrent changed the password automatically, to print it:
   ```sh
-  sh ./scripts/fix_after_login.sh --harden
+  docker logs qbittorrent 2>&1     | grep -A1 "WebUI administrator username is"     | tail -n 1     | awk '{print $NF}'
   ```
-  This enables:
-  - `WebUI\CSRFProtection=true`
-  - `WebUI\ClickjackingProtection=true`
-  - `WebUI\HostHeaderValidation=true`
 
-  If you reverse-proxy the UI later, add appropriate host/domain whitelists in `qBittorrent.conf` (keys vary by version; see comments in the script).
+- (Optional) Move your own **torrents** into `/Downloads/...` and your **BT_backup** into into `AppData/qbt-proton/qBittorrent` 
+
+## 3) After login — run the fix
+
+Run this **every time** after first login or when you restored torrents:
+
+```sh
+sh scripts/fix_after_login.sh
+```
+- Wait. Wait. 1 to 5 minutes.
+
+What it does:
+
+	- Stops qB & Gluetun cleanly (with waits)
+	- Patches `.fastresume` from `/downloads` → `/Downloads`
+	- Ensures `/Downloads/Incomplete` and `/Downloads/Torrents` exist
+	- Starts Gluetun (waits until **healthy**), then qB
+	- Reads the **forwarded port** from Gluetun
+	- Applies qB settings **via WebUI API** (not file edits) to avoid *Unauthorized*:
+	- `bypass_local_auth=true`
+	- `web_ui_host_header_validation=false`
+	- `web_ui_csrf_protection_enabled=false`
+	- whitelist `127.0.0.1/32,::1/128`
+	- save path `/Downloads`, temp `/Downloads/Incomplete`
+	- listen port = forwarded port
+	- Restarts qB and verifies
+	
+- Some may need to reboot the NAS or stop then run again **qbt-proton-qnap** in Container Station
+- If you have put your torrents in the correct paths, *Force recheck* them in Qbittorrent WebUI.
+
+## 5) Check everything (optional)
+
+```sh
+# VPN public IP
+docker run --rm --network=container:gluetun alpine:3.20   sh -c 'apk add -q --no-progress curl >/dev/null && curl -s https://ipinfo.io'
+
+# DNS leak test (script default)
+docker run --rm --network=container:gluetun alpine:3.20 sh -c '  apk add -q --no-progress curl wget >/dev/null &&   curl -s https://raw.githubusercontent.com/macvk/dnsleaktest/master/dnsleaktest.sh -o /tmp/d &&   chmod +x /tmp/d && /tmp/d'
+
+# Forwarded port from Gluetun
+docker exec gluetun sh -lc 'cat /tmp/gluetun/forwarded_port || curl -s http://localhost:8000/v1/openvpn/portforwarded'
+```
+
+## 6) **log in and set a new password** (Qbittorrent → Settings → WebUI )
+- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent.
+- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set your NAS to auto copy this folder anywhere else.
+- Done !
 
 ---
 
-### Thanks to Seraph_TC on reddit :
+## Files & Structure
 
-By default, gluetun adds 1.1.1.1 (Cloudfare DNS) to the list of dns servers it uses - you can verify this by connecting through the gluetun tunel with docker and running a dns leak test:
+```
+qbt-proton-qnap/
+├─ envExample                 # copy to .env and edit
+├─ docker-compose.yml
+├─ scripts/
+│  ├─ install.sh
+│  └─ fix_after_login.sh
+└─ qBittorrent/
+   ├─ qBittorrent.conf
+   ├─ categories.json
+   └─ watched_folders.json
+```
 
-docker run --rm --network=container:gluetun alpine:3.20 sh -c "apk add wget && apk add curl && apk add bash && curl https://raw.githubusercontent.com/macvk/dnsleaktest/master/dnsleaktest.sh -o dnsleaktest.sh && chmod +x dnsleaktest.sh && wget -qO- https://ipinfo.io && ./dnsleaktest.sh"
-
-In the env settings for gluetun, set the following:
-
-DOT=off
-
-DNS_ADDRESS=<dns address from wireguard config>
-
-This will prevent gluetun from routing dns with it's own unbound implementation, and pass them to proton instead.
-
----
-
-### Troubleshooting
-- **Stalled / missing files** after migration from `/downloads` (lowercase):  
-  Run `sh ./scripts/fix_after_login.sh --rehash-only` then in WebUI **Force recheck**.
-- **Permissions** on QNAP: scripts always `chown -R PUID:PGID` and grant group write on all `/Downloads` and config paths.
-- **WebUI not reachable**:
-  - Check you mapped the correct `WEBUI_PORT` in `.env`.
-  - Ensure `LAN_SUBNETS` matches your LAN (e.g. `192.168.1.0/24`).
-  - `docker logs gluetun` — you should see the composed iptables rules allowing that port.
-- **Proton port forwarding**:
-  - Use P2P servers that support PF.
-  - See `docker logs gluetun` for the forwarded port status.
-- **Bind to VPN**:
-  - We set `Connection\Interface=tun0` in `qBittorrent.conf`. Traffic stays inside the tunnel.
-  - Even without `Connection\Interface=tun0` , Qbittorrent shouldn't be able to connect anything outside of the tunnel.
+- All qB config files end up in `${CONFIG_ROOT}/qBittorrent/`
+- Downloads are in `${DOWNLOADS_ROOT}` mounted at `/Downloads`
 
 ---
 
-## Credits
-- Massive thanks to **torrentsec** for his original project and guidance:
-  - Repo: https://github.com/torrentsec/qbittorrent-protonvpn-docker
-  - Profile: https://github.com/torrentsec
+## Notes on Gluetun DNS & API
+
+- We use **Proton DNS 10.2.0.1** and set `DOT=off` so DNS is not routed via Gluetun’s Unbound.
+- The Gluetun **control server** (port 8000 **inside** the container) is protected by an **API key** defined in `.env` (`GLUETUN_API_KEY`) and written to `/gluetun/auth/config.toml`.
+- The qB **GSP Mod** uses the same API key (`GSP_GTN_API_KEY`) to read the forwarded port and keep qB in sync.
+
+---
+
+## Defaults
+
+- Country/City: `France / Paris`
+- WebUI: host `:8081`
+- qB: anonymous mode **disabled**, encryption **Allow**, UPnP **off**
+- ulimits: `nofile` soft `32768`, hard `65536`
+
+You can change `SERVER_COUNTRIES` / `SERVER_CITIES` in `.env`. See Proton’s list for other P2P/port‑forwarding cities.
+
+---
+
+## Troubleshooting
+
+- **Unauthorized on WebUI**  
+  Always run `scripts/fix_after_login.sh` once after first login. It applies the API settings that prevent the 401 with LSIO + Mod.
+
+- **Port 8081 busy**  
+  Change `WEBUI_HOST_PORT` in `.env`, then `docker compose down && docker compose up -d`.
+
+- **Paths mismatch or torrents “missing files”**  
+  Ensure you moved your **files** only **after** the first start. Then select torrents and *Force recheck*.
+
+- **Forwarded port is 0**  
+  Wait until Gluetun is healthy. Check `docker logs gluetun | grep -i forward`.
+
+---
+
+## Security note (what to change later if needed)
+
+This starter is intentionally permissive for WebUI to avoid “Unauthorized” on QNAP.  
+After everything works **and after you changed the admin password**, consider enabling tighter options in qB WebUI:
+
+- Enable **Host header validation**
+- Enable **CSRF protection**
+- Restrict **Auth subnet whitelist** to your LAN
+- Optionally close WebUI exposure and use a reverse proxy with Auth
+
+Edit through the WebUI (recommended, settings there can break the WebUI identification) or adjust and re-run the fix script with your desired values.
+
+---
+
+### Credits
+
+- Based on: <https://github.com/torrentsec/qbittorrent-protonvpn-docker>
+- Thanks <https://github.com/torrentsec>
 
 ---
 
