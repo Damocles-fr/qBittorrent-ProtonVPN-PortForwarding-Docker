@@ -76,7 +76,7 @@ What it does:
 - Some may need to reboot the NAS or stop then run again **qbt-proton-qnap** in Container Station
 - If you have put your torrents in the correct paths, *Force recheck* them in Qbittorrent WebUI.
 
-## 5) Check everything (optional)
+## 4) Check everything (optional)
 
 ```sh
 # VPN public IP
@@ -89,7 +89,7 @@ docker run --rm --network=container:gluetun alpine:3.20 sh -c '  apk add -q --no
 docker exec gluetun sh -lc 'cat /tmp/gluetun/forwarded_port || curl -s http://localhost:8000/v1/openvpn/portforwarded'
 ```
 
-## 6) **log in and set a new password** (Qbittorrent → Settings → WebUI )
+## 5) **log in and set a new password** (Qbittorrent → Settings → WebUI )
 - New .torrent added in /Downloads/Torrents are automatically added to qBittorrent.
 - Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set your NAS to auto copy this folder anywhere else.
 - Done !
@@ -114,15 +114,11 @@ qbt-proton-qnap/
 - All qB config files end up in `${CONFIG_ROOT}/qBittorrent/`
 - Downloads are in `${DOWNLOADS_ROOT}` mounted at `/Downloads`
 
----
-
 ## Notes on Gluetun DNS & API
 
 - We use **Proton DNS 10.2.0.1** and set `DOT=off` so DNS is not routed via Gluetun’s Unbound.
 - The Gluetun **control server** (port 8000 **inside** the container) is protected by an **API key** defined in `.env` (`GLUETUN_API_KEY`) and written to `/gluetun/auth/config.toml`.
 - The qB **GSP Mod** uses the same API key (`GSP_GTN_API_KEY`) to read the forwarded port and keep qB in sync.
-
----
 
 ## Defaults
 
@@ -132,8 +128,6 @@ qbt-proton-qnap/
 - ulimits: `nofile` soft `32768`, hard `65536`
 
 You can change `SERVER_COUNTRIES` / `SERVER_CITIES` in `.env`. See Proton’s list for other P2P/port‑forwarding cities.
-
----
 
 ## Troubleshooting
 
@@ -149,8 +143,6 @@ You can change `SERVER_COUNTRIES` / `SERVER_CITIES` in `.env`. See Proton’s li
 - **Forwarded port is 0**  
   Wait until Gluetun is healthy. Check `docker logs gluetun | grep -i forward`.
 
----
-
 ## Security note (what to change later if needed)
 
 This starter is intentionally permissive for WebUI to avoid “Unauthorized” on QNAP.  
@@ -165,17 +157,13 @@ Edit through the WebUI (recommended, settings there can break the WebUI identifi
 
 ---
 
-### Credits
+## Credits
 
 - Based on: <https://github.com/torrentsec/qbittorrent-protonvpn-docker>
 - Thanks <https://github.com/torrentsec>
 
----
-
 ## License
 This project is licensed under the MIT License – see the LICENSE file for details.
-
----
 
 ## Github
 [https://github.com/Damocles-fr/](https://github.com/Damocles-fr)
