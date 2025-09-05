@@ -89,9 +89,9 @@ docker run --rm --network=container:gluetun alpine:3.20 sh -c '  apk add -q --no
 docker exec gluetun sh -lc 'cat /tmp/gluetun/forwarded_port || curl -s http://localhost:8000/v1/openvpn/portforwarded'
 ```
 
-## 5) **log in and set a new password** (Qbittorrent → Settings → WebUI )
-- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent.
-- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set your NAS to auto copy this folder anywhere else.
+## 5) **log in and set a new password** (qBittorrent → Settings → WebUI )
+- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (Set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
+- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
 - Done !
 
 ---
