@@ -1,4 +1,4 @@
-# qbt-proton-qnap
+# qbt-proton-docker
 
 **qBittorrent + ProtonVPN (WireGuard) on QNAP**, fully routed through VPN with **automatic port forwarding Mod**, DNS set to **Proton (10.2.0.1)**, and a startup that avoids the classic qB WebUI *Unauthorized* issue on QNAP Container Station.
 
