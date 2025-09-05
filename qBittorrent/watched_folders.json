@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "/Downloads/Torrents": {
+      "save_path": "",
+      "recursive": true,
+      "enabled": true,
+      "download_in_subfolder": false
+    }
+  }
+}
