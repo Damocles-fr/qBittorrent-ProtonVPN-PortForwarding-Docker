@@ -1,0 +1,37 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# qbt-proton-qnap :: envExample (rename to .env and edit)
+# ──────────────────────────────────────────────────────────────────────────────
+# Paths on your QNAP (adapt if you don't use CACHEDEV3_DATA or SSD2TB)
+CONFIG_ROOT=/share/CACHEDEV3_DATA/SSD2TB/AppData/qbt-proton
+DOWNLOADS_ROOT=/share/CACHEDEV3_DATA/SSD2TB/Downloads
+
+# Container user
+PUID=1000
+PGID=100
+TZ=Europe/Paris
+
+# ProtonVPN (WireGuard) — get your private key from https://account.protonvpn.com/
+WIREGUARD_PRIVATE_KEY=REPLACE_WITH_YOUR_WG_PRIVATE_KEY
+# Proton WireGuard address and Proton DNS (fixed)
+WIREGUARD_ADDRESSES=10.2.0.2/32
+DNS_ADDRESS=10.2.0.1
+DOT=off
+
+# Server selection (only port-forwarding servers are chosen)
+SERVER_COUNTRIES=France
+SERVER_CITIES=Paris
+
+# qBittorrent
+# QNAP already binds 8080, so WebUI is published on host port 8081
+WEBUI_HOST_PORT=8081
+
+# Gluetun Control Server auth — used by the port-forwarding mod (GSP) inside qB
+# Use a random 22+ chars string (letters+digits). You can generate:
+#   docker run --rm qmcgaw/gluetun genkey
+GLUETUN_API_KEY=CHANGE_ME_TO_A_RANDOM_BASE58_KEY
+
+# GSP Mod (Port Forwarding Sync) — must match the Gluetun API key above
+GSP_GTN_API_KEY=${GLUETUN_API_KEY}
+# Initial qBittorrent listening port (updated automatically by the mod)
+GSP_QBITTORRENT_PORT=53764
+GSP_MINIMAL_LOGS=false

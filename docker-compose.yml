@@ -1,0 +1,76 @@
+services:
+  gluetun:
+    image: ghcr.io/qdm12/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+    environment:
+      - VPN_SERVICE_PROVIDER=protonvpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+      - SERVER_CITIES=${SERVER_CITIES}
+      - VPN_PORT_FORWARDING=on
+      - DOT=${DOT}
+      - DNS_ADDRESS=${DNS_ADDRESS}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/gluetun:/gluetun
+    # Publish qB WebUI through gluetun (internal 8080) to host 8081
+    ports:
+      - "${WEBUI_HOST_PORT:-8081}:8080/tcp"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:9999"]
+      interval: 40s
+      timeout: 15s
+      retries: 5
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+      - QBITTORRENT_INTERFACE=tun0
+      # Port Forwarding Mod (Syncs qBittorrent with Gluetun)
+      - DOCKER_MODS=ghcr.io/t-anc/gsp-qbittorent-gluetun-sync-port-mod:main
+      - GSP_GTN_API_KEY=${GSP_GTN_API_KEY}
+      - GSP_QBITTORRENT_PORT=${GSP_QBITTORRENT_PORT}
+      - GSP_MINIMAL_LOGS=${GSP_MINIMAL_LOGS}
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 65536
+    volumes:
+      - ${CONFIG_ROOT}/qBittorrent:/config
+      - ${DOWNLOADS_ROOT}:/Downloads
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=86400
+      - WATCHTOWER_LABEL_ENABLE=true
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
