@@ -2,7 +2,7 @@
 
 **qBittorrent + ProtonVPN (WireGuard) on QNAP**, fully routed through VPN with **automatic port forwarding Mod**, DNS set to **Proton (10.2.0.1)**, and a startup that avoids the classic qB WebUI *Unauthorized* issue on QNAP Container Station.
 
-## UPDATE v09 : Should works with latest Gluetun, mod, and Qbittorrent
+## UPDATE v09 : Should works with latest Gluetun, mod, and qBittorrent
 
 ## What you get
 
