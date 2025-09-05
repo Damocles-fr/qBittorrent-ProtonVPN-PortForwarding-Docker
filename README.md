@@ -77,7 +77,15 @@ What it does:
 - Some may need to reboot the NAS or stop then run again **qbt-proton-qnap** in Container Station
 - If you have put your torrents in the correct paths, *Force recheck* them in Qbittorrent WebUI.
 
-## 4) Check everything (optional)
+## 4) Done !
+
+- **log in and set a new password** (qBittorrent → Settings → WebUI )
+- Security note : after everything works **and after you changed the admin password**, consider enabling tighter options in qB WebUI
+- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (Set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
+- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
+
+
+## 5) Check everything (optional)
 
 ```sh
 # VPN public IP
@@ -89,12 +97,6 @@ docker run --rm --network=container:gluetun alpine:3.20 sh -c '  apk add -q --no
 # Forwarded port from Gluetun
 docker exec gluetun sh -lc 'cat /tmp/gluetun/forwarded_port || curl -s http://localhost:8000/v1/openvpn/portforwarded'
 ```
-
-## 5) Done !
-- **log in and set a new password** (qBittorrent → Settings → WebUI )
-- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (Set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
-- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
-
 ---
 
 ## Files & Structure
@@ -144,6 +146,20 @@ You can change `SERVER_COUNTRIES` / `SERVER_CITIES` in `.env`. See Proton’s li
 - **Forwarded port is 0**  
   Wait until Gluetun is healthy. Check `docker logs gluetun | grep -i forward`.
 
+- **You messed up with qBittorrent settings**  
+  Stop the app **qbt-proton-qnap** in Container Station  
+  Copy **qBittorrent.conf** from `stacks\qbt-proton-qnap\qBittorrent` and paste/replace into `AppData\qbt-proton\qBittorrent`  
+  Re-run the fix script :
+  ```sh
+  cd /share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap
+  sh scripts/fix_after_login.sh
+  ```
+
+- If qBittorrent changed the password automatically, to print it:
+  ```sh
+  docker logs qbittorrent 2>&1     | grep -A1 "WebUI administrator username is"     | tail -n 1     | awk '{print $NF}'
+  ```
+  
 ## Security note (what to change later if needed)
 
 This starter is intentionally permissive for WebUI to avoid “Unauthorized” on QNAP.  
