@@ -50,9 +50,10 @@ sh scripts/install.sh
 
 ## 3) After login — run the fix
 
-Run this **every time** after first login or when you restored torrents:
+- **Mandatory**: Run this script after initial login or when you restored torrents
 
 ```sh
+cd /share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap
 sh scripts/fix_after_login.sh
 ```
 - Wait. Wait. 1 to 5 minutes.
@@ -89,10 +90,10 @@ docker run --rm --network=container:gluetun alpine:3.20 sh -c '  apk add -q --no
 docker exec gluetun sh -lc 'cat /tmp/gluetun/forwarded_port || curl -s http://localhost:8000/v1/openvpn/portforwarded'
 ```
 
-## 5) **log in and set a new password** (qBittorrent → Settings → WebUI )
+## 5) Done !
+- **log in and set a new password** (qBittorrent → Settings → WebUI )
 - New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (Set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
 - Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
-- Done !
 
 ---
 
