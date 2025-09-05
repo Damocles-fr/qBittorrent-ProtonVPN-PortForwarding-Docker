@@ -50,7 +50,7 @@ sh scripts/install.sh
 
 ## 3) After login — run the fix
 
-- **Mandatory**: Run this script after initial login or when you restored torrents
+- **Mandatory**: Run this script once after initial login or when you restored torrents
 
 ```sh
 cd /share/CACHEDEV3_DATA/SSD2TB/stacks/qbt-proton-qnap
