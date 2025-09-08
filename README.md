@@ -178,6 +178,8 @@ Edit through the WebUI (recommended, settings there can break the WebUI identifi
 
 - Based on: <https://github.com/torrentsec/qbittorrent-protonvpn-docker>
 - Thanks <https://github.com/torrentsec>
+- Thanks <https://github.com/t-anc>
+- Thanks <https://github.com/qdm12/gluetun>
 
 ## License
 This project is licensed under the MIT License – see the LICENSE file for details.
