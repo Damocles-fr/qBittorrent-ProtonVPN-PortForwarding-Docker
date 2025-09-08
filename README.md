@@ -7,7 +7,7 @@
 ## What you get
 
 - qBittorrent behind **Gluetun (ProtonVPN WireGuard)**  
-- **Automatic port forwarding Mod** (keeps qB's listen port synced with Gluetun)
+- **Automatic port forwarding GSP Mod** (keeps qB's listen port synced with Gluetun)
 - WebUI exposed on **host `:8081`** (QNAP already uses `:8080`)
 - Proton **DNS 10.2.0.1** and WG address **10.2.0.2/32** (no Cloudflare)
 - Safe first-boot WebUI options to avoid *Unauthorized*
