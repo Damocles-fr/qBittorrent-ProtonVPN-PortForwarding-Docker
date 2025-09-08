@@ -178,7 +178,7 @@ Edit through the WebUI (recommended, settings there can break the WebUI identifi
 
 - Based on: <https://github.com/torrentsec/qbittorrent-protonvpn-docker>
 - Thanks <https://github.com/torrentsec>
-- Thanks <https://github.com/t-anc>
+- Thanks <https://github.com/t-anc/GSP-Qbittorent-Gluetun-sync-port-mod>
 - Thanks <https://github.com/qdm12/gluetun>
 
 ## License
