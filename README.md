@@ -81,8 +81,9 @@ What it does:
 
 - **log in and set a new password** (qBittorrent → Settings → WebUI )
 - Security note : after everything works **and after you changed the admin password**, consider enabling tighter options in qB WebUI
-- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (Set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
-- Use categories to move your torrents files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
+- New .torrent added in /Downloads/Torrents are automatically added to qBittorrent. (You can set qBittorrent → Settings → Downloads → Default Save Path → Copy .torrent files for finished downloads to: /Downloads/torrentsfiles)
+- Use categories to move your files, e.g. create categories like "FILM_To_Move" and and set the NAS to automatically relocate the folder contents.
+- Qnap has an app called Qfilling that is easy to use and perfect for that.
 
 
 ## 5) Check everything (optional)
