@@ -182,8 +182,5 @@ Edit through the WebUI (recommended, settings there can break the WebUI identifi
 - Thanks <https://github.com/t-anc/GSP-Qbittorent-Gluetun-sync-port-mod>
 - Thanks <https://github.com/qdm12/gluetun>
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
-
 ## Github
 [https://github.com/Damocles-fr/](https://github.com/Damocles-fr)
